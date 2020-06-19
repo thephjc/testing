@@ -1,0 +1,43 @@
+function doPost(e) {
+  if (typeof e !== 'undefined') { 
+    var ss = SpreadsheetApp.getActiveSpreadsheet(); 
+    var sheet = ss.getSheetByName('submit to color!');
+    var lastRow = sheet.getLastRow();
+
+    // extract the relevant data
+    var parameter = e.parameter;
+    var teamDomain = parameter.team_domain;
+    var channelName = parameter.channel_name;
+    var userID = parameter.user_ID;
+    var submitName = parameter.text;
+    var date = new Date();
+    var slackDetails = [date,teamDomain,channelName,userID,submitName];
+
+    // paste the slack details to the sheet
+    sheet.getRange(lastRow + 1,1,1,5).setValues([slackDetails]);
+    sheet.appendRow
+  }
+  return 
+  ContentService.createTextOutput(':nerd_face: Thank you for your request. :tada:');
+}
+
+// function to send message to Slack
+function sendToSlack() {
+  
+  // custom slack webhook
+  var url = "https://hooks.slack.com/services/xxxx";
+  
+  var payload = {
+    "channel": "@testing",
+    "username": "color-bot",
+    "text": "Request details"
+  };
+
+  var options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify(payload)
+  };
+  
+  return UrlFetchApp.fetch(url,options);
+}
